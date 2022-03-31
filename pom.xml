@@ -13,6 +13,12 @@
   <description>Solution for teamidea test tasks.</description>
   <url>https://www.github.com/Krasobas/teamidea_krasov</url>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>14</maven.compiler.source>
+    <maven.compiler.target>14</maven.compiler.target>
+  </properties>
+
   <profiles>
     <!--test-->
     <profile>
@@ -154,7 +160,7 @@
         </executions>
       </plugin>
       <!--liquibase-->
-      <plugin>
+      <!--<plugin>
         <groupId>org.liquibase</groupId>
         <artifactId>liquibase-maven-plugin</artifactId>
         <version>3.6.2</version>
@@ -175,7 +181,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 
