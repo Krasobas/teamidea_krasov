@@ -6,11 +6,12 @@
 
   <groupId>ru.teamidea</groupId>
   <artifactId>teamidea_krasov</artifactId>
+  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
   <name>teamidea_krasov</name>
   <description>Solution for teamidea test tasks.</description>
-  <url>http://www.example.com</url>
+  <url>https://www.github.com/Krasobas/teamidea_krasov</url>
 
   <profiles>
     <!--test-->
