@@ -1,6 +1,7 @@
-package ru.teamidea;
+package ru.teamidea.solutions.weather;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -16,18 +17,28 @@ import org.slf4j.LoggerFactory;
 
 public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class.getName());
-    private static final String MSK = "lat=55.751244&lon=37.618423";
-    private static final String KEY = "94191f446903981502baaf3eedecc2ee";
-    private static final String URL = String.format("https://api.openweathermap.org/data/2.5/onecall?%s&exclude=minutely,hourly,alerts,current&units=metric&appid=%s", MSK, KEY);
+    private final Properties cfg = new Properties();
     private JSONObject document;
 
     public App() {
         init();
     }
 
+    private void cfg() {
+        try (InputStream in = App.class.getClassLoader()
+                .getResourceAsStream("app.properties")) {
+            cfg.load(in);
+        } catch (IOException e) {
+            LOG.error("Impossible to read properties file.", e);
+        }
+    }
+
     private void init() {
+        cfg();
+        String url = String.format("https://api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s&exclude=minutely,hourly,alerts,current&units=metric&appid=%s",
+                cfg.get("lat"), cfg.get("lon"), cfg.get("key"));
         try {
-            this.document = (JSONObject) new JSONParser().parse(Jsoup.connect(URL)
+            this.document = (JSONObject) new JSONParser().parse(Jsoup.connect(url)
                     .header("Content-Type", "application/json")
                     .header("Accept", "application/json")
                     .followRedirects(true)
@@ -45,7 +56,8 @@ public class App {
         DateFormat dateForm = new SimpleDateFormat("EEEE, d MMMM yyyy", Locale.ENGLISH);
         timeForm.setTimeZone(TimeZone.getTimeZone("UTC"));
         dateForm.setTimeZone(TimeZone.getTimeZone("UTC"));
-        StringBuilder builder = new StringBuilder("Information for the next 5 days (including the current date) for the city of Moscow:")
+        StringBuilder builder = new StringBuilder()
+                .append(String.format("Information for the next 5 days (including the current one) for the city of %s:", cfg.get("city")))
                 .append(System.lineSeparator())
                 .append(String.format("1. Minimum difference between \"feels like\" and actual temperature at night: %.2f C° on %s%n", minTempDiff, dateForm.format(tempDate)))
                 .append(String.format("2. Maximum daylight hours: %s on %s", timeForm.format(maxDaylight), dateForm.format(daylightDate)));

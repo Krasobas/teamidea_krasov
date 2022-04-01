@@ -2,6 +2,7 @@ package ru.teamidea;
 
 import org.junit.Assert;
 import org.junit.Test;
+import ru.teamidea.solutions.weather.App;
 
 /**
  * Unit test for simple App.
