@@ -13,7 +13,7 @@ import java.io.IOException;
 public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class.getName());
 
-    public double getPrice(Document document, String id) {
+    private double getPrice(Document document, String id) {
         Element element = document.getElementById(id);
         int nominal = Integer.parseInt(element.child(2).text());
         double value = Double.parseDouble(element.child(4).text().replace(',', '.'));
