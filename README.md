@@ -2,7 +2,7 @@
 [![Build Status](https://app.travis-ci.com/Krasobas/teamidea_krasov.svg?branch=master)](https://app.travis-ci.com/Krasobas/teamidea_krasov)
 [![codecov](https://codecov.io/gh/Krasobas/teamidea_krasov/branch/master/graph/badge.svg?token=Z5PCTG6WW9)](https://codecov.io/gh/Krasobas/teamidea_krasov)
 
-This project represents a solution for TeamIDEA company test tasks.
+This project represents a solution for TeamIDEA company test task.
 #### Task:
 Develop a program that, based on the service data [openweathermap.org](https://openweathermap.org/) (requires registration, Free plan is enough) will display the following data for your city:
 1. Day, with the minimum difference between the "feels like" and actual temperature at night (indicating the difference in degrees Celsius)
