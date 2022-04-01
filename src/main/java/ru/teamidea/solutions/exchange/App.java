@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class App {
     private static final Logger LOG = LoggerFactory.getLogger(App.class.getName());
+    private static final String LINK = "http://www.cbr.ru/scripts/XML_daily.asp";
 
     private double getPrice(Document document, String id) {
         Element element = document.getElementById(id);
@@ -21,8 +22,7 @@ public class App {
     }
 
     public void run() {
-        String link = "http://www.cbr.ru/scripts/XML_daily.asp";
-        Connection connection = Jsoup.connect(link);
+        Connection connection = Jsoup.connect(LINK);
         try {
             Document document = connection.get();
             double forint = getPrice(document, "R01135");
