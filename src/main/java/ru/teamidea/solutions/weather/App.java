@@ -64,30 +64,44 @@ public class App {
         System.out.println(builder);
     }
 
+    public double minNightTemp(JSONObject day, Date currentDate, Calendar tempDate, double minTempDiff) {
+        JSONObject tempJS = (JSONObject) day.get("temp");
+        JSONObject feelsLikeJS = (JSONObject) day.get("feels_like");
+        double temp = (Double) tempJS.get("night");
+        double feelsLike = (Double) feelsLikeJS.get("night");
+        double diff = Math.abs(feelsLike - temp);
+        double oldDbl = minTempDiff;
+        minTempDiff = Math.min(minTempDiff, diff);
+        if (minTempDiff != oldDbl) {
+            tempDate.setTime(currentDate);
+        }
+        return minTempDiff;
+    }
+
+    public long maxDaylight(JSONObject day, Date currentDate, Calendar daylightDate, long maxDaylight) {
+        long diffInMs = Math.abs((Long) day.get("sunrise") * 1000 - (Long) day.get("sunset") * 1000);
+        long daylight = TimeUnit.MILLISECONDS.convert(diffInMs, TimeUnit.MILLISECONDS);
+        long oldLng = maxDaylight;
+        maxDaylight = Math.max(daylight, maxDaylight);
+        if (maxDaylight != oldLng) {
+            daylightDate.setTime(currentDate);
+        }
+        return maxDaylight;
+    }
+
     public void run() {
         JSONArray days = (JSONArray) document.get("daily");
         double minTempDiff = 1000;
         long maxDaylight = 0;
-        Date daylightDate = null;
-        Date tempDate = null;
+        Calendar daylightDate = new GregorianCalendar();
+        Calendar tempDate = new GregorianCalendar();
         for (int i = 0; i < 5; i++) {
             JSONObject day = (JSONObject) days.get(i);
             Date currentDate = new Date((Long) day.get("dt") * 1000);
-            JSONObject tempJS = (JSONObject) day.get("temp");
-            JSONObject feelsLikeJS = (JSONObject) day.get("feels_like");
-            double temp = (Double) tempJS.get("night");
-            double feelsLike = (Double) feelsLikeJS.get("night");
-            double diff = Math.abs(feelsLike - temp);
-            double oldDbl = minTempDiff;
-            minTempDiff = Math.min(minTempDiff, diff);
-            tempDate = minTempDiff == oldDbl ? tempDate : currentDate;
-            long diffInMs = Math.abs((Long) day.get("sunrise") * 1000 - (Long) day.get("sunset") * 1000);
-            long daylight = TimeUnit.MILLISECONDS.convert(diffInMs, TimeUnit.MILLISECONDS);
-            long oldLng = maxDaylight;
-            maxDaylight = Math.max(daylight, maxDaylight);
-            daylightDate = maxDaylight == oldLng ? daylightDate : currentDate;
+            minTempDiff = minNightTemp(day, currentDate, tempDate, minTempDiff);
+            maxDaylight = maxDaylight(day, currentDate, daylightDate, maxDaylight);
         }
-        print(minTempDiff, maxDaylight, daylightDate, tempDate);
+        print(minTempDiff, maxDaylight, daylightDate.getTime(), tempDate.getTime());
     }
 
     public static void main(String[] args) {
