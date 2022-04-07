@@ -43,5 +43,5 @@ To build and start the solution program `cd` the project directory and use comma
 ![img](img/exchange.png)
 
 #### Used technologies:
-1. JSOUP for parsing the API URL 
+1. JSOUP for parsing 
 2. Slf4j for logging
